@@ -108,6 +108,12 @@ class _AzureOpenAISettings(BaseSettings):
     temperature: float = 0
     top_p: float = 0
     max_tokens: int = 1000
+    
+    @property
+    def is_reasoning_model(self) -> bool:
+        reasoning_prefixes = ("gpt-5", "o1", "o3", "o4")
+        return self.model.lower().startswith(reasoning_prefixes)
+    
     stream: bool = True
     stop_sequence: Optional[List[str]] = None
     seed: Optional[int] = None

@@ -283,13 +283,17 @@ def prepare_model_args(request_body, request_headers):
 
     model_args = {
         "messages": messages,
-        "temperature": app_settings.azure_openai.temperature,
-        "max_tokens": app_settings.azure_openai.max_tokens,
-        "top_p": app_settings.azure_openai.top_p,
         "stop": app_settings.azure_openai.stop_sequence,
         "stream": app_settings.azure_openai.stream,
-        "model": app_settings.azure_openai.model
-    }
+        "model": app_settings.azure_openai.model }
+
+    if app_settings.azure_openai.is_reasoning_model:
+        model_args["max_completion_tokens"] = app_settings.azure_openai.max_tokens
+    else:
+        model_args["temperature"] = app_settings.azure_openai.temperature
+        model_args["max_tokens"] = app_settings.azure_openai.max_tokens
+        model_args["top_p"] = app_settings.azure_openai.top_p
+
 
     if len(messages) > 0:
         if messages[-1]["role"] == "user":
@@ -1050,7 +1054,12 @@ async def generate_title(conversation_messages) -> str:
     try:
         azure_openai_client = await init_openai_client()
         response = await azure_openai_client.chat.completions.create(
-            model=app_settings.azure_openai.model, messages=messages, temperature=1, max_tokens=64
+            model=app_settings.azure_openai.model, messages=messages, 
+            **(
+                {"max_completion_tokens": 64}
+                if app_settings.azure_openai.is_reasoning_model
+                else {"temperature": 1, "max_tokens": 64}
+            )
         )
 
         title = response.choices[0].message.content
