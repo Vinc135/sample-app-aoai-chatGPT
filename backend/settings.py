@@ -41,11 +41,11 @@ class _UiSettings(BaseSettings):
         env_ignore_empty=True
     )
 
-    title: str = "Contoso"
+    title: str = "KI Chatbot Benno"
     logo: Optional[str] = None
     chat_logo: Optional[str] = None
-    chat_title: str = "Start chatting"
-    chat_description: str = "This chatbot is configured to answer your questions"
+    chat_title: str = "Fange an zu chatten"
+    chat_description: str = "Dieser Chatbot beantwortet allgemeine Fragen. Bitte beachten Sie, dass die Antworten möglicherweise nicht immer korrekt sind. Für spezifische Fragen wenden Sie sich bitte an die zuständigen Stellen."
     favicon: str = "/favicon.ico"
     show_share_button: bool = True
     show_chat_history_button: bool = True
@@ -108,7 +108,7 @@ class _AzureOpenAISettings(BaseSettings):
     temperature: float = 0
     top_p: float = 0
     max_tokens: int = 1000
-    
+
     @property
     def is_reasoning_model(self) -> bool:
         reasoning_prefixes = ("gpt-5", "o1", "o3", "o4")
