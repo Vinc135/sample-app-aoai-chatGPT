@@ -108,7 +108,8 @@ const Chat = () => {
 
   useEffect(() => {
     if (!appStateContext?.state.isLoading) {
-      setLogo(ui?.chat_logo || ui?.logo || Contoso)
+      const logoValue = ui?.chat_logo ?? ui?.logo
+      setLogo((typeof logoValue === "string" ? logoValue : Contoso) as string)
     }
   }, [appStateContext?.state.isLoading])
 

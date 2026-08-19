@@ -42,7 +42,8 @@ const Layout = () => {
 
   useEffect(() => {
     if (!appStateContext?.state.isLoading) {
-      setLogo(ui?.logo || Contoso)
+      const logoValue = ui?.logo
+      setLogo(typeof logoValue === "string" ? logoValue : (Contoso as unknown as string))
     }
   }, [appStateContext?.state.isLoading])
 
